@@ -50,7 +50,7 @@ public class TulingRobot implements IMsgHandlerFace {
 			if (obj.getString("code").equals("100000")) {
 				result = obj.getString("text");
 			} else {
-				result = "处理有误";
+				result = "今天天气真好";
 			}
 		} catch (Exception e) {
 			logger.info(e.getMessage());

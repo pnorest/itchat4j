@@ -1,5 +1,6 @@
 package cn.zhouyafeng.itchat4j.core;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 
@@ -124,36 +125,54 @@ public class MsgCenter {
 			if (core.getMsgList().size() > 0 && core.getMsgList().get(0).getContent() != null) {
 				if (core.getMsgList().get(0).getContent().length() > 0) {
 					BaseMsg msg = core.getMsgList().get(0);
-					if (msg.getType() != null) {
-						try {
-							if (msg.getType().equals(MsgTypeEnum.TEXT.getType())) {
-								String result = msgHandler.textMsgHandle(msg);
-								MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-							} else if (msg.getType().equals(MsgTypeEnum.PIC.getType())) {
-
-								String result = msgHandler.picMsgHandle(msg);
-								MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-							} else if (msg.getType().equals(MsgTypeEnum.VOICE.getType())) {
-								String result = msgHandler.voiceMsgHandle(msg);
-								MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-							} else if (msg.getType().equals(MsgTypeEnum.VIEDO.getType())) {
-								String result = msgHandler.viedoMsgHandle(msg);
-								MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-							} else if (msg.getType().equals(MsgTypeEnum.NAMECARD.getType())) {
-								String result = msgHandler.nameCardMsgHandle(msg);
-								MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-							} else if (msg.getType().equals(MsgTypeEnum.SYS.getType())) { // 系统消息
-								msgHandler.sysMsgHandle(msg);
-							} else if (msg.getType().equals(MsgTypeEnum.VERIFYMSG.getType())) { // 确认添加好友消息
-								String result = msgHandler.verifyAddFriendMsgHandle(msg);
-								MessageTools.sendMsgById(result,
-										core.getMsgList().get(0).getRecommendInfo().getUserName());
-							} else if (msg.getType().equals(MsgTypeEnum.MEDIA.getType())) { // 多媒体消息
-								String result = msgHandler.mediaMsgHandle(msg);
+					if(msg.isGroupMsg()){//如果是群消息
+						List<String> groupIdList=core.getGroupIdList();
+						//for (String groupId :groupIdList){//遍历群名  测试群id： "@@e3c20c252fac4ff1129dc5dcc2190218ee417cd47fd28c958ad6f26347bda7cb"
+						//if(groupId.equals("@@e3c20c252fac4ff1129dc5dcc2190218ee417cd47fd28c958ad6f26347bda7cb")) {//如果是测试群
+						if (msg.getType().equals(MsgTypeEnum.TEXT.getType())) {
+							if (msg.getContent().contains("哈")) {
+								String result = "haha";
+								//String result = msgHandler.textMsgHandle(msg);
 								MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
 							}
-						} catch (Exception e) {
-							e.printStackTrace();
+						}
+						//}
+						//}
+
+
+					}else
+					{
+						if (msg.getType() != null ) {//对个人回复所有消息，对群只回复文本消息
+							try {
+								if (msg.getType().equals(MsgTypeEnum.TEXT.getType())) {
+									String result = msgHandler.textMsgHandle(msg);
+									MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+								} else if (msg.getType().equals(MsgTypeEnum.PIC.getType())) {
+
+									String result = msgHandler.picMsgHandle(msg);
+									MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+								} else if (msg.getType().equals(MsgTypeEnum.VOICE.getType())) {
+									String result = msgHandler.voiceMsgHandle(msg);
+									MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+								} else if (msg.getType().equals(MsgTypeEnum.VIEDO.getType())) {
+									String result = msgHandler.viedoMsgHandle(msg);
+									MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+								} else if (msg.getType().equals(MsgTypeEnum.NAMECARD.getType())) {
+									String result = msgHandler.nameCardMsgHandle(msg);
+									MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+								} else if (msg.getType().equals(MsgTypeEnum.SYS.getType())) { // 系统消息
+									msgHandler.sysMsgHandle(msg);
+								} else if (msg.getType().equals(MsgTypeEnum.VERIFYMSG.getType())) { // 确认添加好友消息
+									String result = msgHandler.verifyAddFriendMsgHandle(msg);
+									MessageTools.sendMsgById(result,
+											core.getMsgList().get(0).getRecommendInfo().getUserName());
+								} else if (msg.getType().equals(MsgTypeEnum.MEDIA.getType())) { // 多媒体消息
+									String result = msgHandler.mediaMsgHandle(msg);
+									MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
