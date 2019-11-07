@@ -183,7 +183,7 @@ public class MsgCenter {
 											Double  priceNumber  = Double.valueOf(price);//原价
 											Double  rateNumber  = Double.valueOf(rate);
 											DecimalFormat df   = new DecimalFormat(".##");
-											Double   returnNumber=priceNumber*(rateNumber/100-0.01);//返约 返佣大约多少  返佣率一般为0.06
+											Double   returnNumber=priceNumber*(rateNumber/100)*0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
 
 											if(returnNumber<=0){
 												returnNumber=0.0;
