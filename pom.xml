@@ -23,7 +23,18 @@
 	    <artifactId>httpclient</artifactId>
 	    <version>4.5.3</version>
 	</dependency>
-	
+      <!--网络请求包-->
+      <dependency>
+          <groupId>com.github.JoeKerouac</groupId>
+          <artifactId>net</artifactId>
+          <version>1.7.000</version>
+      </dependency>
+      <!--常用工具包-->
+      <dependency>
+          <groupId>com.github.JoeKerouac</groupId>
+          <artifactId>utils</artifactId>
+          <version>1.8.009</version>
+      </dependency>
 	<dependency>  
         <groupId>org.apache.httpcomponents</groupId>  
         <artifactId>httpmime</artifactId>  
