@@ -24,7 +24,7 @@ public class UnusefulDemo implements IMsgHandlerFace {
 			if (text.equals("111")) {
 				String username = "yaphone";
 				String password = "123456";
-				String localPath = "D://itchat4j/pic/1.jpg";
+				String localPath = "/home/taochat/itchat4j/pic/1.jpg";
 				String uploadUrl = "http://127.0.0.1/file/put";
 				try {
 					AssistTools.sendQrPicToServer(username, password, uploadUrl, localPath);
@@ -63,7 +63,7 @@ public class UnusefulDemo implements IMsgHandlerFace {
 
 	public static void main(String[] args) {
 		IMsgHandlerFace msgHandler = new UnusefulDemo();
-		Wechat wechat = new Wechat(msgHandler, "D://itchat4j/login");
+		Wechat wechat = new Wechat(msgHandler, "/home/taochat/itchat4j/login");
 		wechat.start();
 	}
 

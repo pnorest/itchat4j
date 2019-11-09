@@ -19,7 +19,7 @@ public class Config {
 
 	public static final String API_WXAPPID = "API_WXAPPID";
 
-	public static final String picDir = "D://itchat4j";
+	public static final String picDir = "/home/taochat/itchat4j";
 	public static final String VERSION = "1.2.18";
 	public static final String BASE_URL = "https://login.weixin.qq.com";
 	public static final String OS = "";

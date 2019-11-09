@@ -153,9 +153,13 @@ public class MsgCenter {
 									String s = StringUtils.substringBetween(msg.getContent(), "￥","￥");
 									String s2 = StringUtils.substringBetween(msg.getContent(), "(",")");//₴
 									String s3 = StringUtils.substringBetween(msg.getContent(), "₴","₴");//₴
+									String s4 = StringUtils.substringBetween(msg.getContent(), "₤","₤");//₤
 
 
-									if (StringUtils.isNotBlank(s)||StringUtils.isNotBlank(s2)||StringUtils.isNotBlank(s3)) {
+									if (StringUtils.isNotBlank(s)||StringUtils.isNotBlank(s2)||StringUtils.isNotBlank(s3)||StringUtils.isNotBlank(s4)) {
+										if(s4!=null){
+											s=s4;
+										}
 										if(s3!=null){
 											s=s3;
 										}
