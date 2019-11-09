@@ -157,7 +157,7 @@ public class MsgCenter {
 									Robot2 robot2=new Robot2(client);
 									Map searchMap = robot2.convertLink(taoToken);//转取淘口令，得到click_url  商品id num_iid
 									if(searchMap==null){
-										MessageTools.sendMsgById("口令有误或者无返", core.getMsgList().get(0).getFromUserName());
+										MessageTools.sendMsgById("口令有误或者优惠券", core.getMsgList().get(0).getFromUserName());
 
 									}else {
 										String num_iid=(String) searchMap.get("num_iid");
