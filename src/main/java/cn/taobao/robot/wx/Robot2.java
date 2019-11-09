@@ -67,14 +67,14 @@ public class Robot2 {
     private volatile LoginEvent event;
 
     //喵有券，解析短链接转长链接
-    private static final String CONVERT_LINK ="https://api.open.21ds.cn/apiv2/doTpwdCovert?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&pid=mm_678590149_1005350029_109645400042&content=%s&tbname=心与星座";
+    private static final String CONVERT_LINK ="https://api.open.21ds.cn/apiv2/doTpwdCovert?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&pid=mm_54175988_1005850130_109645300226&content=%s&tbname=happy月儿弯弯";//mm_54175988_1005850130_109645300226 happy月儿弯弯
 
 
 
 
     private static final String CONVERT_TO_TAO_TOKEN ="http://api.gw.21ds.cn/api/taoke/createTaoPwd?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&url=%s";
 
-    private static final String FIND_INFO ="https://api.open.21ds.cn/apiv2/getitemgyurl?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&itemid=%s&pid=mm_678590149_1005350029_109645400042&tbname=心与星座&tpwd=1&extsearch=1&shorturl=1&hasiteminfo=1";
+    private static final String FIND_INFO ="https://api.open.21ds.cn/apiv2/getitemgyurl?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&itemid=%s&pid=mm_54175988_1005850130_109645300226&tbname=happy月儿弯弯&tpwd=1&extsearch=1&shorturl=1&hasiteminfo=1";
 
 
     //网络请求客户端
@@ -376,12 +376,11 @@ public class Robot2 {
      * @param taoToken 淘口令
      * @return 使用喵有券将淘口令转换成长链接+商品id(暂时无用)
      */
-//    https://api.open.21ds.cn/apiv2/doTpwdCovert?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&pid=mm_678590149_1005350029_109645400042&content=(oTSdYtDT2Z3)&tbname=心与星座
 
     public  Map convertLink(String taoToken) {
         try {
-        String converLink = String.format(CONVERT_LINK, taoToken);
-        String convertResult = clientUtil.executeGet(converLink);
+            String converLink = String.format(CONVERT_LINK, taoToken);
+            String convertResult = clientUtil.executeGet(converLink);
 //            {
 //                "data": {
 //                "click_url": "https://s.click.taobao.com/t?e=m%3D2%26s%3DyVWHU6Lg4YccQipKwQzePOeEDrYVVa64yK8Cckff7TVRAdhuF14FMYlZk0W5VTRP8sviUM61dt3txjDKKwzMqiyObRCAGeWuv2Xo1FcoH6RbAavvauJSlikFS%2FH8C2lDIWLb4DzFlElwMk5pfidPEeQBKw54kkLDGKFSnMVzg486SQhXWAB0%2BWMqMI5xWHmC1cy%2FnSh2vJGCwbhHwBx5jzzEtIYmXKPgNRMybQuH%2FfDGDmntuH4VtA%3D%3D&union_lens=lensId:0b14e162_11bb_16e40eb4d37_41e3",
@@ -391,8 +390,8 @@ public class Robot2 {
 //                    "code": 200,
 //                    "msg": "success"
 //            }
-        Map searchMap = (Map) parser.readAsObject(convertResult, Map.class).get("data");
-        return searchMap;
+            Map searchMap = (Map) parser.readAsObject(convertResult, Map.class).get("data");
+            return searchMap;
 
 
         } catch (Exception e) {
