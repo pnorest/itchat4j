@@ -187,7 +187,7 @@ public class MsgCenter {
 											}
 											String returnPrice=df.format(returnNumber);
 
-											str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(couponPrice).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,小仙女们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
+											str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(couponPrice).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
 
 										}else {
 											Double   returnNumber=priceNumber*(rateNumber/100)*0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
@@ -195,7 +195,7 @@ public class MsgCenter {
 												returnNumber=0.0;
 											}
 											String returnPrice=df.format(returnNumber);
-											str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(priceNumber).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,小仙女们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
+											str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(priceNumber).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
 										}
 
 
