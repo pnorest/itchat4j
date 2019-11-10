@@ -144,97 +144,157 @@ public class MsgCenter {
 							List<String> groupIdList=core.getGroupIdList();
 							//for (String groupId :groupIdList){//遍历群名  测试群id： "@@e3c20c252fac4ff1129dc5dcc2190218ee417cd47fd28c958ad6f26347bda7cb"
 							//if(groupId.equals("@@e3c20c252fac4ff1129dc5dcc2190218ee417cd47fd28c958ad6f26347bda7cb")) {//如果是测试群
-							if (msg.getType().equals(MsgTypeEnum.TEXT.getType())) {
-								String regex="\\w{11}";
-								String content=msg.getContent();
+						  if (msg.getType() != null ) {
+							  if (msg.getType().equals(MsgTypeEnum.TEXT.getType())) {
+								  String regex = "\\w{11}";
+								  String content = msg.getContent();
 
-								String TAO_TOKEN=getMatchers(regex,content);
-								if(TAO_TOKEN.equals("")||TAO_TOKEN==""){
-									//当群消息没有匹配到出淘口令时
-								}else {
-									String taoToken = "￥" + TAO_TOKEN + "￥";
-									System.out.println("收到淘口令 => " + taoToken);
-									Robot2 robot2=new Robot2(client);
-									Map searchMap = robot2.convertLink(taoToken);//转取淘口令，得到click_url  商品id num_iid
-									if(searchMap==null){
-										MessageTools.sendMsgById("本商品无优惠券噢", core.getMsgList().get(0).getFromUserName());
+								  String TAO_TOKEN = getMatchers(regex, content);
+								  if (TAO_TOKEN.equals("") || TAO_TOKEN == "") {
+									  //当群消息没有匹配到出淘口令时
+								  } else {
+									  String taoToken = "￥" + TAO_TOKEN + "￥";
+									  System.out.println("收到淘口令 => " + taoToken);
+									  Robot2 robot2 = new Robot2(client);
+									  Map searchMap = robot2.convertLink(taoToken);//转取淘口令，得到click_url  商品id num_iid
+									  if (searchMap == null) {
+										  MessageTools.sendMsgById("本商品无优惠券噢", core.getMsgList().get(0).getFromUserName());
 
-									}else {
-										String num_iid=(String) searchMap.get("num_iid");
-										TaoBaoResult taoBaoResult=robot2.findInfo(num_iid);//通过商品id得到该商品的具体信息，佣金比例，价格和自己的二合一淘口令
-										StringBuilder str=new StringBuilder();
-
-
-										String price=taoBaoResult.getItem_info().getZk_final_price();//原价
-										String rate=taoBaoResult.getMax_commission_rate();//佣金率 4.5
-										String tpwd=taoBaoResult.getTpwd();//淘口令
-										String title=taoBaoResult.getItem_info().getTitle();
-
-										Double  priceNumber  = Double.valueOf(price);//原价
-										Double  rateNumber  = Double.valueOf(rate);//15% 以结算价格算佣金
-										DecimalFormat df   = new DecimalFormat(".##");
-
-										if (taoBaoResult.isHas_coupon()){
-											String coupon=taoBaoResult.getYouhuiquan();//优惠大小
-
-											Double  couponNumber  = Double.valueOf(coupon);
-
-											Double  couponPrice= priceNumber-couponNumber;//券后价
-
-											Double   returnNumber=couponPrice*(rateNumber/100)*0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
-											if(returnNumber<=0){
-												returnNumber=0.0;
-											}
-											String returnPrice=df.format(returnNumber);
-
-											str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(couponPrice).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
-
-										}else {
-											Double   returnNumber=priceNumber*(rateNumber/100)*0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
-											if(returnNumber<=0){
-												returnNumber=0.0;
-											}
-											String returnPrice=df.format(returnNumber);
-											str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(priceNumber).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
-										}
+									  } else {
+										  String num_iid = (String) searchMap.get("num_iid");
+										  TaoBaoResult taoBaoResult = robot2.findInfo(num_iid);//通过商品id得到该商品的具体信息，佣金比例，价格和自己的二合一淘口令
+										  StringBuilder str = new StringBuilder();
 
 
-										MessageTools.sendMsgById(str.toString(), core.getMsgList().get(0).getFromUserName());
-									}
-								}
-							}
+										  String price = taoBaoResult.getItem_info().getZk_final_price();//原价
+										  String rate = taoBaoResult.getMax_commission_rate();//佣金率 4.5
+										  String tpwd = taoBaoResult.getTpwd();//淘口令
+										  String title = taoBaoResult.getItem_info().getTitle();
 
+										  Double priceNumber = Double.valueOf(price);//原价
+										  Double rateNumber = Double.valueOf(rate);//15% 以结算价格算佣金
+										  DecimalFormat df = new DecimalFormat(".##");
+
+										  if (taoBaoResult.isHas_coupon()) {
+											  String coupon = taoBaoResult.getYouhuiquan();//优惠大小
+
+											  Double couponNumber = Double.valueOf(coupon);
+
+											  Double couponPrice = priceNumber - couponNumber;//券后价
+
+											  Double returnNumber = couponPrice * (rateNumber / 100) * 0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
+											  if (returnNumber <= 0) {
+												  returnNumber = 0.0;
+											  }
+											  String returnPrice = df.format(returnNumber);
+
+											  str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(couponPrice).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
+
+										  } else {
+											  Double returnNumber = priceNumber * (rateNumber / 100) * 0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
+											  if (returnNumber <= 0) {
+												  returnNumber = 0.0;
+											  }
+											  String returnPrice = df.format(returnNumber);
+											  str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(priceNumber).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
+										  }
+
+
+										  MessageTools.sendMsgById(str.toString(), core.getMsgList().get(0).getFromUserName());
+									  }
+								  }
+							  }
+						  }
 
 						}else//个人消息
 						{
 							if (msg.getType() != null ) {//对个人回复所有消息，对群只回复文本消息
 								try {
 									if (msg.getType().equals(MsgTypeEnum.TEXT.getType())) {
-										String result = msgHandler.textMsgHandle(msg);
-										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-									} else if (msg.getType().equals(MsgTypeEnum.PIC.getType())) {
+										String regex="\\w{11}";
+										String content=msg.getContent();
 
-										String result = msgHandler.picMsgHandle(msg);
-										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-									} else if (msg.getType().equals(MsgTypeEnum.VOICE.getType())) {
-										String result = msgHandler.voiceMsgHandle(msg);
-										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-									} else if (msg.getType().equals(MsgTypeEnum.VIEDO.getType())) {
-										String result = msgHandler.viedoMsgHandle(msg);
-										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-									} else if (msg.getType().equals(MsgTypeEnum.NAMECARD.getType())) {
-										String result = msgHandler.nameCardMsgHandle(msg);
-										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
-									} else if (msg.getType().equals(MsgTypeEnum.SYS.getType())) { // 系统消息
-										msgHandler.sysMsgHandle(msg);
-									} else if (msg.getType().equals(MsgTypeEnum.VERIFYMSG.getType())) { // 确认添加好友消息
-										String result = msgHandler.verifyAddFriendMsgHandle(msg);
-										MessageTools.sendMsgById(result,
-												core.getMsgList().get(0).getRecommendInfo().getUserName());
-									} else if (msg.getType().equals(MsgTypeEnum.MEDIA.getType())) { // 多媒体消息
-										String result = msgHandler.mediaMsgHandle(msg);
-										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+										String TAO_TOKEN=getMatchers(regex,content);
+										if(TAO_TOKEN.equals("")||TAO_TOKEN==""){
+											//当群消息没有匹配到出淘口令时
+										}else {
+											String taoToken = "￥" + TAO_TOKEN + "￥";
+											System.out.println("收到淘口令 => " + taoToken);
+											Robot2 robot2=new Robot2(client);
+											Map searchMap = robot2.convertLink(taoToken);//转取淘口令，得到click_url  商品id num_iid
+											if(searchMap==null){
+												MessageTools.sendMsgById("本商品无优惠券噢", core.getMsgList().get(0).getFromUserName());
+
+											}else {
+												String num_iid=(String) searchMap.get("num_iid");
+												TaoBaoResult taoBaoResult=robot2.findInfo(num_iid);//通过商品id得到该商品的具体信息，佣金比例，价格和自己的二合一淘口令
+												StringBuilder str=new StringBuilder();
+
+
+												String price=taoBaoResult.getItem_info().getZk_final_price();//原价
+												String rate=taoBaoResult.getMax_commission_rate();//佣金率 4.5
+												String tpwd=taoBaoResult.getTpwd();//淘口令
+												String title=taoBaoResult.getItem_info().getTitle();
+
+												Double  priceNumber  = Double.valueOf(price);//原价
+												Double  rateNumber  = Double.valueOf(rate);//15% 以结算价格算佣金
+												DecimalFormat df   = new DecimalFormat(".##");
+
+												if (taoBaoResult.isHas_coupon()){
+													String coupon=taoBaoResult.getYouhuiquan();//优惠大小
+
+													Double  couponNumber  = Double.valueOf(coupon);
+
+													Double  couponPrice= priceNumber-couponNumber;//券后价
+
+													Double   returnNumber=couponPrice*(rateNumber/100)*0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
+													if(returnNumber<=0){
+														returnNumber=0.0;
+													}
+													String returnPrice=df.format(returnNumber);
+
+													str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(couponPrice).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
+
+												}else {
+													Double   returnNumber=priceNumber*(rateNumber/100)*0.8;//返约 返佣大约多少  返佣率一般为0.06  然后抽取0.2
+													if(returnNumber<=0){
+														returnNumber=0.0;
+													}
+													String returnPrice=df.format(returnNumber);
+													str.append(title).append("\n").append("原    价: ").append(priceNumber).append(" 元 \n").append("券后价: ").append(priceNumber).append(" 元 \n").append("———————————————").append("\n").append("复制此消息:").append(tpwd).append("\n").append("打开TaoBao使用,群友们以后可根据购物车商品自主查券省钱噢,以后可以支撑更多功能,欢迎广大群友提意见");
+												}
+
+
+												MessageTools.sendMsgById(str.toString(), core.getMsgList().get(0).getFromUserName());
+											}
+										}
 									}
+//									if (msg.getType().equals(MsgTypeEnum.TEXT.getType())) {
+//										String result = msgHandler.textMsgHandle(msg);
+//										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+//									} else if (msg.getType().equals(MsgTypeEnum.PIC.getType())) {
+//
+//										String result = msgHandler.picMsgHandle(msg);
+//										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+//									} else if (msg.getType().equals(MsgTypeEnum.VOICE.getType())) {
+//										String result = msgHandler.voiceMsgHandle(msg);
+//										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+//									} else if (msg.getType().equals(MsgTypeEnum.VIEDO.getType())) {
+//										String result = msgHandler.viedoMsgHandle(msg);
+//										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+//									} else if (msg.getType().equals(MsgTypeEnum.NAMECARD.getType())) {
+//										String result = msgHandler.nameCardMsgHandle(msg);
+//										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+//									} else if (msg.getType().equals(MsgTypeEnum.SYS.getType())) { // 系统消息
+//										msgHandler.sysMsgHandle(msg);
+//									} else if (msg.getType().equals(MsgTypeEnum.VERIFYMSG.getType())) { // 确认添加好友消息
+//										String result = msgHandler.verifyAddFriendMsgHandle(msg);
+//										MessageTools.sendMsgById(result,
+//												core.getMsgList().get(0).getRecommendInfo().getUserName());
+//									} else if (msg.getType().equals(MsgTypeEnum.MEDIA.getType())) { // 多媒体消息
+//										String result = msgHandler.mediaMsgHandle(msg);
+//										MessageTools.sendMsgById(result, core.getMsgList().get(0).getFromUserName());
+//									}
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
