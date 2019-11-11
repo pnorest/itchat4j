@@ -19,6 +19,7 @@ import cn.zhouyafeng.itchat4j.face.IMsgHandlerFace;
 import cn.zhouyafeng.itchat4j.utils.MyHttpClient;
 import cn.zhouyafeng.itchat4j.utils.enums.MsgTypeEnum;
 import cn.zhouyafeng.itchat4j.utils.tools.DownloadTools;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 图灵机器人示例
@@ -33,6 +34,21 @@ public class TulingRobot implements IMsgHandlerFace {
 	MyHttpClient myHttpClient = Core.getInstance().getMyHttpClient();
 	String url = "http://www.tuling123.com/openapi/api";
 	String apiKey = "597b34bea4ec4c85a775c469c84b6817"; // 这里是我申请的图灵机器人API接口，每天只能5000次调用，建议自己去申请一个，免费的:)
+	@Value("${picPath}")
+	private  String picPath;
+
+	@Value("${filePath}")
+	private  String filePath;
+
+	@Value("${voicePath}")
+	private  String voicePath;
+
+	@Value("${videoPath}")
+	private  String videoPath;
+
+
+
+
 
 	@Override
 	public String textMsgHandle(BaseMsg msg) {
@@ -66,23 +82,23 @@ public class TulingRobot implements IMsgHandlerFace {
 	@Override
 	public String voiceMsgHandle(BaseMsg msg) {
 		String fileName = String.valueOf(new Date().getTime());
-		String voicePath = "/home/taochat/itchat4j/voice" + File.separator + fileName + ".mp3";
-		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VOICE.getType(), voicePath);
+		String voiceReceivePath = voicePath + File.separator + fileName + ".mp3";
+		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VOICE.getType(), voiceReceivePath);
 		return "收到语音";
 	}
 
 	@Override
 	public String viedoMsgHandle(BaseMsg msg) {
 		String fileName = String.valueOf(new Date().getTime());
-		String viedoPath = "/home/taochat/itchat4j/viedo" + File.separator + fileName + ".mp4";
-		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VIEDO.getType(), viedoPath);
+		String videoReceivePath = videoPath + File.separator + fileName + ".mp4";
+		DownloadTools.getDownloadFn(msg, MsgTypeEnum.VIEDO.getType(), videoReceivePath);
 		return "收到视频";
 	}
 
 	public static void main(String[] args) {
-		IMsgHandlerFace msgHandler = new TulingRobot();
-		Wechat wechat = new Wechat(msgHandler, "/home/taochat/itchat4j/login");
-		wechat.start();
+//		IMsgHandlerFace msgHandler = new TulingRobot();
+//		Wechat wechat = new Wechat(msgHandler, "/home/taochat/itchat4j/login");
+//		wechat.start();
 	}
 
 	@Override

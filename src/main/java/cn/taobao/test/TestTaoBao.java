@@ -101,11 +101,11 @@ public class TestTaoBao {
      * @param data 二维码数据
      */
     private static void saveQR(String data) {//data https://login.weixin.qq.com/l/QaG77NQ_Iw==
-        try {
-            System.out.println("保存二维码");
-            IQRCode.create(data, new FileOutputStream("/home/taochat/itchat4j/a.jpg"), 200, 200);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println("保存二维码");
+//            IQRCode.create(data, new FileOutputStream("/home/taochat/itchat4j/a.jpg"), 200, 200);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

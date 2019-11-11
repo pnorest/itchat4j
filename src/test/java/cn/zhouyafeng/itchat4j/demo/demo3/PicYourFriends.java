@@ -19,6 +19,7 @@ import cn.zhouyafeng.itchat4j.core.Core;
 import cn.zhouyafeng.itchat4j.face.IMsgHandlerFace;
 import cn.zhouyafeng.itchat4j.utils.MyHttpClient;
 import cn.zhouyafeng.itchat4j.utils.enums.StorageLoginInfoEnum;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 此示例演示如何获取所有好友的头像
@@ -32,7 +33,13 @@ public class PicYourFriends implements IMsgHandlerFace {
 	private static Logger LOG = LoggerFactory.getLogger(PicYourFriends.class);
 	private static final Core core = Core.getInstance();
 	private static final MyHttpClient myHttpClient = core.getMyHttpClient();
-	private static final String path = "/home/taochat/itchat4j/head"; // 这里需要设置保存头像的路径
+//	private static final String headPath = "/home/taochat/itchat4j/head"; // 这里需要设置保存头像的路径
+
+	@Value("${headPath}")
+	private static String headPath;
+
+
+
 
 	@Override
 	public String textMsgHandle(BaseMsg msg) {
@@ -48,7 +55,7 @@ public class PicYourFriends implements IMsgHandlerFace {
 					JSONObject friend = friends.get(i);
 					String url = baseUrl + friend.getString("HeadImgUrl") + skey;
 					// String fileName = friend.getString("NickName");
-					String headPicPath = path + File.separator + i + ".jpg";
+					String headPicPath = headPath + File.separator + i + ".jpg";
 
 					HttpEntity entity = myHttpClient.doGet(url, null, true, null);
 					try {
@@ -99,10 +106,11 @@ public class PicYourFriends implements IMsgHandlerFace {
 	}
 
 	public static void main(String[] args) {
-		String qrPath = "/home/taochat/itchat4j/login"; // 保存登陆二维码图片的路径，这里需要在本地新建目录
-		IMsgHandlerFace msgHandler = new PicYourFriends(); // 实现IMsgHandlerFace接口的类
-		Wechat wechat = new Wechat(msgHandler, qrPath); // 【注入】
-		wechat.start(); // 启动服务，会在qrPath下生成一张二维码图片，扫描即可登陆，注意，二维码图片如果超过一定时间未扫描会过期，过期时会自动更新，所以你可能需要重新打开图片
+//		String qrPath = "/home/taochat/itchat4j/login"; // 保存登陆二维码图片的路径，这里需要在本地新建目录
+//		IMsgHandlerFace msgHandler = new PicYourFriends(); // 实现IMsgHandlerFace接口的类
+//		Wechat wechat = new Wechat(msgHandler, qrPath); // 【注入】
+//		wechat.start(); // 启动服务，会在qrPath下生成一张二维码图片，扫描即可登陆，注意，二维码图片如果超过一定时间未扫描会过期，过期时会自动更新，所以你可能需要重新打开图片
+//
 	}
 
 	@Override
