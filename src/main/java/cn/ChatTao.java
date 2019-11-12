@@ -15,6 +15,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ChatTao {
     public static  void  main(String args[]){
         SpringApplication.run(ChatTao.class,args);
-
     }
 }

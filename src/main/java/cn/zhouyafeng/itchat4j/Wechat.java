@@ -8,7 +8,7 @@ import cn.zhouyafeng.itchat4j.core.MsgCenter;
 import cn.zhouyafeng.itchat4j.face.IMsgHandlerFace;
 
 public class Wechat {
-	private static final Logger LOG = LoggerFactory.getLogger(Wechat.class);
+	private  final Logger LOG = LoggerFactory.getLogger(Wechat.class);
 	private IMsgHandlerFace msgHandler;
 
 	public Wechat(IMsgHandlerFace msgHandler, String qrPath) {

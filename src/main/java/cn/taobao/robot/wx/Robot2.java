@@ -22,6 +22,7 @@ import com.joe.utils.parse.json.JsonParser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -42,6 +43,16 @@ import java.util.regex.Pattern;
  **/
 public class Robot2 {
     protected static final Logger logger = LoggerFactory.getLogger(Robot2.class);
+
+    @Value("${tbname}")
+    private static String tbname;
+
+    @Value("${pid}")
+    private static String pid;
+
+    @Value("${apkey}")
+    private static String apkey;
+
     private static final JsonParser parser = JsonParser.getInstance();
     //将淘口令转换成长链接
     private static final String TKL_PARSER = "http://api.chaozhi.hk/tb/tklParse";
@@ -67,14 +78,11 @@ public class Robot2 {
     private volatile LoginEvent event;
 
     //喵有券，解析短链接转长链接
-    private static final String CONVERT_LINK ="https://api.open.21ds.cn/apiv2/doTpwdCovert?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&pid=mm_54175988_1005850130_109645300226&content=%s&tbname=happy月儿弯弯";//mm_54175988_1005850130_109645300226 happy月儿弯弯
+    private static final String CONVERT_LINK ="https://api.open.21ds.cn/apiv2/doTpwdCovert?apkey=%s&pid=%s&content=%s&tbname=%s";//mm_54175988_1005850130_109645300226 happy月儿弯弯
 
+    private static final String CONVERT_TO_TAO_TOKEN ="http://api.gw.21ds.cn/api/taoke/createTaoPwd?apkey=%s&url=%s";
 
-
-
-    private static final String CONVERT_TO_TAO_TOKEN ="http://api.gw.21ds.cn/api/taoke/createTaoPwd?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&url=%s";
-
-    private static final String FIND_INFO ="https://api.open.21ds.cn/apiv2/getitemgyurl?apkey=dd8fa81a-bb23-5026-254a-1f146e46f08d&itemid=%s&pid=mm_54175988_1005850130_109645300226&tbname=happy月儿弯弯&tpwd=1&extsearch=1&shorturl=1&hasiteminfo=1";
+    private static final String FIND_INFO ="https://api.open.21ds.cn/apiv2/getitemgyurl?apkey=%s&itemid=%s&pid=%s&tbname=%s&tpwd=1&extsearch=1&shorturl=1&hasiteminfo=1";
 
 
     //网络请求客户端
@@ -379,8 +387,8 @@ public class Robot2 {
 
     public  Map convertLink(String taoToken) {
         try {
-            String converLink = String.format(CONVERT_LINK, taoToken);
-            String convertResult = clientUtil.executeGet(converLink);
+            String convertLink = String.format(CONVERT_LINK,apkey, pid,taoToken,tbname);
+            String convertResult = clientUtil.executeGet(convertLink);
 //            {
 //                "data": {
 //                "click_url": "https://s.click.taobao.com/t?e=m%3D2%26s%3DyVWHU6Lg4YccQipKwQzePOeEDrYVVa64yK8Cckff7TVRAdhuF14FMYlZk0W5VTRP8sviUM61dt3txjDKKwzMqiyObRCAGeWuv2Xo1FcoH6RbAavvauJSlikFS%2FH8C2lDIWLb4DzFlElwMk5pfidPEeQBKw54kkLDGKFSnMVzg486SQhXWAB0%2BWMqMI5xWHmC1cy%2FnSh2vJGCwbhHwBx5jzzEtIYmXKPgNRMybQuH%2FfDGDmntuH4VtA%3D%3D&union_lens=lensId:0b14e162_11bb_16e40eb4d37_41e3",
@@ -410,7 +418,7 @@ public class Robot2 {
     public String convertToTaoToken(String click_url) {
         try {
 // https://s.click.taobao.com/t?e=m%3D2%26s%3DOua0uzJu9oUcQipKwQzePOeEDrYVVa64yK8Cckff7TVRAdhuF14FMZiP9bF55eyLRitN3%2FurF3ztxjDKKwzMqiyObRCAGeWuv2Xo1FcoH6RbAavvauJSlikFS%2FH8C2lDIWLb4DzFlElwMk5pfidPEeQBKw54kkLDGKFSnMVzg4%2BlV%2FRptmtqXksB6%2Ftl8rFe1FX0grNL16FwdKsi3%2Bx5UH9tQc8eOsLf6zeN9GIIRwg%3D&union_lens=lensId:0b588f4b_2c36_16e4356c7a4_1982
-            String convertTaoToken = String.format(CONVERT_TO_TAO_TOKEN, URLEncoder.encode(click_url, "UTF8"));
+            String convertTaoToken = String.format(CONVERT_TO_TAO_TOKEN, apkey,URLEncoder.encode(click_url, "UTF8"));
             String taoToken = clientUtil.executeGet(convertTaoToken);
             return taoToken;
         }catch (Exception e){
@@ -431,7 +439,7 @@ public class Robot2 {
             TaoBaoResult taoBaoResult=new TaoBaoResult();
             ItemInfo itemInfo=new ItemInfo();
             taoBaoResult.setItem_info(itemInfo);
-            String findInfo = String.format(FIND_INFO, num_iid);
+            String findInfo = String.format(FIND_INFO, apkey,num_iid,pid,tbname);
             String info = clientUtil.executeGet(findInfo);
 
             Map resultMap = (Map) parser.readAsObject(info, Map.class).get("result");
