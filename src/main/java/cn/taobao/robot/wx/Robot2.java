@@ -23,6 +23,7 @@ import com.joe.utils.parse.json.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -41,17 +42,18 @@ import java.util.regex.Pattern;
  * @Date 2019/11/6 10:36
  * @Version 1.0
  **/
+
 public class Robot2 {
     protected static final Logger logger = LoggerFactory.getLogger(Robot2.class);
 
-    @Value("${tbname}")
-    private static String tbname;
 
-    @Value("${pid}")
-    private static String pid;
+    private  String tbname="happy月儿弯弯";
 
-    @Value("${apkey}")
-    private static String apkey;
+
+    private  String pid="mm_54175988_1005850130_109645300226";
+
+
+    private  String apkey="dd8fa81a-bb23-5026-254a-1f146e46f08d";
 
     private static final JsonParser parser = JsonParser.getInstance();
     //将淘口令转换成长链接
@@ -90,6 +92,7 @@ public class Robot2 {
 
     protected IHttpClient client;
     public Robot2(IHttpClient client){
+
         this.client = client;
         this.clientUtil = new IHttpClientUtil(this.client);
     }
@@ -387,7 +390,7 @@ public class Robot2 {
 
     public  Map convertLink(String taoToken) {
         try {
-            String convertLink = String.format(CONVERT_LINK,apkey, pid,taoToken,tbname);
+            String convertLink = String.format(CONVERT_LINK,apkey,pid,taoToken,tbname);
             String convertResult = clientUtil.executeGet(convertLink);
 //            {
 //                "data": {
